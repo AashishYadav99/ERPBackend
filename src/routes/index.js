@@ -41,6 +41,8 @@ const CityRoute = require("./city.route");
 const SettingLandedCostRoute = require("./setting_landed_cost.route");
 const module_masterRoute = require("./module_master.route");
 const sub_module_masterRoute = require("./sub_module_master.route");
+const function_masterRoute = require("./function_master.route");
+const user_managementRoute = require("./user_management.route");
 
 /** ------------ **
 Defining Routes
@@ -48,10 +50,12 @@ Defining Routes
 const router = new express.Router();
 
 /*** Module Specific Routes ***/
-router.use("/module_master", module_masterRoute);
-router.use("/sub_module_master", sub_module_masterRoute);
 
 router.use("/", userMasterRoute);
+router.use("/module_master", module_masterRoute);
+router.use("/sub_module_master", sub_module_masterRoute);
+router.use("/function_master", function_masterRoute);
+router.use("/user_management", user_managementRoute);
 router.use("/item", itemMasterRoute);
 router.use("/batch", batchRoute);
 router.use("/item_color", itemColorRoute);

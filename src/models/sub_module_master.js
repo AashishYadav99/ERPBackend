@@ -24,7 +24,6 @@ module.exports = (sequelize, DataTypes) => {
     {
       module_id: {
         type: DataTypes.BIGINT,
-        autoIncrement: true,
         primaryKey: true,
         allowNull: false,
       },
@@ -39,7 +38,9 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       sub_module_id: {
-        type: DataTypes.STRING(191),
+        type: DataTypes.BIGINT,
+        autoIncrement: true,
+        primaryKey: true,
         allowNull: false,
       },
       sub_module_description: {

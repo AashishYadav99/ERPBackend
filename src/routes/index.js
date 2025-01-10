@@ -43,6 +43,7 @@ const module_masterRoute = require("./module_master.route");
 const sub_module_masterRoute = require("./sub_module_master.route");
 const function_masterRoute = require("./function_master.route");
 const user_managementRoute = require("./user_management.route");
+const user_roleRoute = require("./user_role.route");
 
 /** ------------ **
 Defining Routes
@@ -56,6 +57,7 @@ router.use("/module_master", module_masterRoute);
 router.use("/sub_module_master", sub_module_masterRoute);
 router.use("/function_master", function_masterRoute);
 router.use("/user_management", user_managementRoute);
+router.use("/user_role", user_roleRoute);
 router.use("/item", itemMasterRoute);
 router.use("/batch", batchRoute);
 router.use("/item_color", itemColorRoute);

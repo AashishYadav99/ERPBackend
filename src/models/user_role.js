@@ -3,11 +3,6 @@ const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class user_role extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
     static associate(models) {
       // Define associations here
       //   this.belongsTo(models.user_master, { foreignKey: "user_id", as: "user" });
@@ -30,21 +25,27 @@ module.exports = (sequelize, DataTypes) => {
       //     primaryKey: true,
       //     allowNull: false,
       //   },
-      user_id: {
-        type: DataTypes.BIGINT,
+      // user_id: {
+      //   type: DataTypes.BIGINT,
+      //   allowNull: false,
+      // },
+      uuid: {
+        type: DataTypes.CHAR(36),
+        allowNull: false,
+        unique: true,
+        defaultValue: DataTypes.UUIDV4,
+      },
+      module: {
+        type: DataTypes.STRING(191),
         allowNull: false,
       },
-      module_id: {
-        type: DataTypes.BIGINT,
+      submodules: {
+        type: DataTypes.STRING(191),
         allowNull: false,
       },
-      sub_module_id: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
-      },
-      function_master_id: {
-        type: DataTypes.BIGINT,
-        allowNull: false,
+      functions: {
+        type: DataTypes.STRING(191),
+        allowNull: true,
       },
       can_edit: {
         type: DataTypes.TINYINT(1),

@@ -5,7 +5,7 @@ const user_role_Controller = require("../controller/user_role.controller");
 const router = new express.Router();
 
 // POST route to create a new record
-router.post("/create", user_role_Controller.create);
+router.post("/create", user_role_Controller.bulkCreate);
 router.get("/list", user_role_Controller.getAll);
 router.get("/:id", user_role_Controller.getById);
 router.put("/:id", user_role_Controller.update);

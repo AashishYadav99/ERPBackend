@@ -46,7 +46,7 @@ const { user_role } = require("../models/"); // Import the user_role model
 
 // Controller for creating multiple records
 exports.bulkCreate = async (req, res) => {
-  const { data } = req.body; // Extract an array of user roles from the request body
+  const { data } = req.body;
   console.log("data is ", data);
   console.log("req is ", req.body);
 

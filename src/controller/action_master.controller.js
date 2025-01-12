@@ -10,7 +10,7 @@ exports.search = async (req, res) => {
 
   try {
     const action = await action_master.findOne({
-      where: { action_name: name, deleted_at: null },
+      where: { action_name: name,},
     });
 
     if (action) {
@@ -29,7 +29,12 @@ exports.search = async (req, res) => {
 
 // Controller to create a new action
 exports.create = async (req, res) => {
-  const { action_name } = req.body;
+    const {
+        action_name,
+        created_at,
+        updated_at,
+        deleted_at,
+      } = req.body;
 
   if (!action_name) {
     return res.status(400).json({ message: "Action name is required." });
@@ -39,9 +44,9 @@ exports.create = async (req, res) => {
     // Create the new action
     const newAction = await action_master.create({
       action_name,
-      sorting_order,
       created_at,
       updated_at,
+      deleted_at,
       created_by: 1, // Example: replace with the actual user ID
       updated_by: 1, // Example: replace with the actual user ID
       status: 1, // Default status
@@ -65,7 +70,7 @@ exports.create = async (req, res) => {
 exports.getAll = async (req, res) => {
   try {
     const actions = await action_master.findAll({
-      where: { deleted_at: null },
+      where: { status: 1 },
     });
 
     res.status(200).json({

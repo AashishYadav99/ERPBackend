@@ -49,6 +49,10 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: sequelize.literal("CURRENT_TIMESTAMP"),
       },
+      deleted_at: {
+        type: DataTypes.DATE,
+        allowNull: true,
+      },
     },
     {
       sequelize,
@@ -58,6 +62,7 @@ module.exports = (sequelize, DataTypes) => {
       paranoid: true, // Enables soft delete
       createdAt: "created_at",
       updatedAt: "updated_at",
+      deletedAt: "deleted_at",
     }
   );
 

@@ -1,5 +1,5 @@
 const express = require("express");
-const actionMasterController = require("../controllers/action_master.controller");
+const actionMasterController = require("../controller/action_master.controller");
 const router = new express.Router();
 
 // Routes for action_master

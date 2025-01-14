@@ -45,6 +45,7 @@ const function_masterRoute = require("./function_master.route");
 const user_managementRoute = require("./user_management.route");
 const user_roleRoute = require("./user_role.route");
 const actionMasterRoute = require("./action_master.route");
+const functionMaterMapRoute = require("./function_action_master_map.route");
 
 /** ------------ **
 Defining Routes
@@ -95,5 +96,7 @@ router.use("/company", CompanyRoute);
 router.use("/state", StateRoute);
 router.use("/city", CityRoute);
 router.use("/setting_landed_cost", SettingLandedCostRoute);
+router.use("/function_action_master_map", functionMaterMapRoute);
+
 /*** Export Routrer for import in main application file ***/
 module.exports = router;

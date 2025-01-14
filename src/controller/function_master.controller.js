@@ -1,6 +1,5 @@
-const { function_master } = require("../models/"); // Import the module_master model
+const { function_master, function_action_master_map } = require("../models/");
 
-// Controller for creating a new record
 exports.create = async (req, res) => {
   const {
     module_id,
@@ -16,11 +15,12 @@ exports.create = async (req, res) => {
     date2,
     created_by,
     updated_by,
+    actions,  // Array of action IDs to associate with the function
   } = req.body;
 
   try {
-    // Create a new record in the database
-    const newSubModule = await function_master.create({
+    // Create a new function_master record
+    const newFunctionMaster = await function_master.create({
       module_id,
       sub_module_id,
       function_master_name,
@@ -34,18 +34,27 @@ exports.create = async (req, res) => {
       date2,
       created_by,
       updated_by,
-      // created_at: created_at || new Date(), // Use current date if not provided
     });
 
-    // Return success response
+    // Create entries in the function_action_master_map table
+    if (actions && actions.length > 0) {
+      console.log(actions);
+      const actionEntries = actions.map((action_id) => ({
+        function_master_id: newFunctionMaster.function_master_id,
+        action_id,
+      }));
+      
+      await function_action_master_map.bulkCreate(actionEntries);
+    }
+
     res.status(201).json({
-      message: "Sub-module created successfully!",
-      data: newSubModule,
+      message: "Function and actions created successfully!",
+      data: newFunctionMaster,
     });
   } catch (error) {
-    console.error("Error creating sub-module: ", error);
+    console.error("Error creating function and actions: ", error);
     res.status(500).json({
-      message: "An error occurred while creating the sub-module.",
+      message: "An error occurred while creating the function and actions.",
       error: error.message,
     });
   }

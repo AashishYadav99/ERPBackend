@@ -9,17 +9,16 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // Define any associations here, e.g., foreign key relationships
-      //   this.belongsTo(models.user_master, {
-      //     foreignKey: "created_by",
-      //     as: "creator",
-      //   });
-      //   this.belongsTo(models.user_master, {
-      //     foreignKey: "updated_by",
-      //     as: "updater",
-      //   });
+      // Define the relationship with function_action_master_map (One-to-Many relationship)
+      this.hasMany(models.function_action_master_map, {
+        foreignKey: "function_master_id",  // Foreign key in function_action_master_map
+        as: "function_action_master_maps", // Alias for the relationship
+      });
+
+      // Add any other associations you might need (like belongsTo or hasMany with other models)
     }
   }
+
   function_master.init(
     {
       function_master_id: {
@@ -113,10 +112,10 @@ module.exports = (sequelize, DataTypes) => {
       deletedAt: "deleted_at",
       hooks: {
         beforeCreate: (module, options) => {
-          // You can add any preprocessing before creating a module
+          // You can add any preprocessing before creating a function master entry
         },
         beforeUpdate: (module, options) => {
-          // You can add any preprocessing before updating a module
+          // You can add any preprocessing before updating a function master entry
         },
       },
     }

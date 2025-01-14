@@ -3,8 +3,19 @@ const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class action_master extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
     static associate(models) {
-      // Define associations here if needed
+      // Define the relationship with function_action_master_map (One-to-Many relationship)
+      this.hasMany(models.function_action_master_map, {
+        foreignKey: "action_id",  // Foreign key in function_action_master_map
+        as: "function_action_master_maps", // Alias for the relationship
+      });
+
+      // Add any other associations you might need (like belongsTo or hasMany with other models)
     }
   }
 

@@ -1,49 +1,4 @@
 const { user_role } = require("../models/"); // Import the user_role model
-
-// Controller for creating a new record
-// exports.create = async (req, res) => {
-//   const {
-//     user_id,
-//     module_id,
-//     sub_module_id,
-//     function_master_id,
-//     can_edit,
-//     can_delete,
-//     can_view,
-//     can_rename,
-//     // created_by,
-//     // updated_by,
-//   } = req.body;
-
-//   try {
-//     // Create a new record in the database
-//     const newUserRole = await user_role.create({
-//       user_id,
-//       module_id,
-//       sub_module_id,
-//       function_master_id,
-//       can_edit,
-//       can_delete,
-//       can_view,
-//       can_rename,
-//       // created_by,
-//       // updated_by,
-//     });
-
-//     // Return success response
-//     res.status(201).json({
-//       message: "User role created successfully!",
-//       data: newUserRole,
-//     });
-//   } catch (error) {
-//     console.error("Error creating user role: ", error);
-//     res.status(500).json({
-//       message: "An error occurred while creating the user role.",
-//       error: error.message,
-//     });
-//   }
-// };
-
 // Controller for creating multiple records
 exports.bulkCreate = async (req, res) => {
   const { data } = req.body;

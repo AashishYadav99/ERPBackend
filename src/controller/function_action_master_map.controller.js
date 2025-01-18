@@ -15,7 +15,7 @@ exports.getFunctionActionMasterMaps = async (req, res) => {
           attributes: ["action_id", "action_name"],
         },
       ],
-      logging: console.log,  // Add logging to print SQL queries for debugging
+      //logging: console.log,  // Add logging to print SQL queries for debugging
     });
 
     if (functionActionMaps.length === 0) {

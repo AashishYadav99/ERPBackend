@@ -50,10 +50,10 @@ module.exports = (sequelize, DataTypes) => {
       },
       role: {
         type: DataTypes.STRING(50),
-        allowNull: false, // Mandatory field
-        validate: {
-          notEmpty: true, // Ensures the value is not empty
-        },
+        allowNull: false,
+        // validate: {
+        //   notEmpty: true,
+        // },
       },
     },
     {

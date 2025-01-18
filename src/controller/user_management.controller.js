@@ -1,19 +1,27 @@
 const { user_management } = require("../models/"); // Import the module_master model
 
-// Controller for creating a new record
 exports.create = async (req, res) => {
   const {
     first_name,
     last_name,
-    email,
     country_code,
     phone_number,
-    location,
-    organisation,
-    role,
+    email,
+    rows, // Expecting an array of rows with { country, organization, location, action, selected }
   } = req.body;
 
+  console.log("value is ", rows);
+
   try {
+    // Transform rows for database storage if needed
+    const transformedRows = rows.map((row) => ({
+      country: row.country,
+      organisation: row.organization,
+      location: row.location,
+      role: row.role,
+      // selected: row.selected,
+    }));
+
     // Create a new record in the database
     const newSubModule = await user_management.create({
       first_name,
@@ -21,10 +29,9 @@ exports.create = async (req, res) => {
       email,
       country_code,
       phone_number,
-      location,
-      organisation,
-      role,
+      rows: transformedRows, // Save the rows in your database
     });
+    console.log("newSubModule....", newSubModule);
 
     // Return success response
     res.status(201).json({
@@ -34,11 +41,51 @@ exports.create = async (req, res) => {
   } catch (error) {
     console.error("Error creating sub-module: ", error);
     res.status(500).json({
-      message: "An error occurred while creating the sub-module.",
+      message: "An error occurred while creating the user management.",
       error: error.message,
     });
   }
 };
+
+// Controller for creating a new record
+// exports.create = async (req, res) => {
+//   const {
+//     first_name,
+//     last_name,
+//     email,
+//     country_code,
+//     phone_number,
+//     location,
+//     organisation,
+//     role,
+//   } = req.body;
+
+//   try {
+//     // Create a new record in the database
+//     const newSubModule = await user_management.create({
+//       first_name,
+//       last_name,
+//       email,
+//       country_code,
+//       phone_number,
+//       location,
+//       organisation,
+//       role,
+//     });
+
+//     // Return success response
+//     res.status(201).json({
+//       message: "user_management created successfully!",
+//       data: newSubModule,
+//     });
+//   } catch (error) {
+//     console.error("Error creating sub-module: ", error);
+//     res.status(500).json({
+//       message: "An error occurred while creating the sub-module.",
+//       error: error.message,
+//     });
+//   }
+// };
 
 // Controller for fetching all records
 exports.getAll = async (req, res) => {

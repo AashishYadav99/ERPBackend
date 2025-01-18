@@ -7,7 +7,7 @@ const router = require("./routes/index.js");
 
 const db = require("./models"); // Import Sequelize models
 
-// Config Envioronment Variable
+// Config Environment Variable
 dotenv.config({ path: path.resolve("./", `.env.${process.env.NODE_ENV}`) });
 
 const app = express();
@@ -19,7 +19,7 @@ app.use(cors({ credentials: true, origin: "*" }));
 // Serve Static Content
 app.use("/", express.static(path.resolve(__dirname, "../public")));
 
-// Setup Expres Parser and routes
+// Setup Express Parser and routes
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(
@@ -32,13 +32,22 @@ app.use("/api/", router);
 
 // Handling Errors
 app.use((err, req, res, next) => {
-  // console.log(err);
   err.statusCode = err.statusCode || 500;
   err.message = err.message || "Internal Server Error";
   res.status(err.statusCode).json({
     error: err.message,
   });
 });
+
+// Test Database Connection
+db.sequelize
+  .authenticate()
+  .then(() => {
+    console.log("Database connection successful.");
+  })
+  .catch((error) => {
+    console.error("Unable to connect to the database:", error);
+  });
 
 // Synchronize Sequelize Models with Database
 db.sequelize
@@ -47,10 +56,10 @@ db.sequelize
     console.log("Database synced and tables created.");
   })
   .catch((error) => {
-    // console.error("Error syncing database:", error);
+    console.error("Error syncing database:", error);
   });
 
-// setup express server port
-app.listen(port, () =>
-  console.log("Server running at port ", port, process.env.NODE_ENV)
-);
+// Setup Express Server Port
+app.listen(port, () => {
+  console.log("Server running at port ", port, process.env.NODE_ENV);
+});

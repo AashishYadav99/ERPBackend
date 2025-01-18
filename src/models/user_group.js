@@ -2,33 +2,37 @@
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
-  class user_role extends Model {
+  class user_group extends Model {
     static associate(models) {
-      // Define associations here
-      //   this.belongsTo(models.user_master, { foreignKey: "user_id", as: "user" });
-      //   this.belongsTo(models.sub_module_master, {
-      //     foreignKey: "sub_module_id",
-      //     as: "subModule",
-      //   });
-      //   this.belongsTo(models.function_master, {
-      //     foreignKey: "function_master_id",
-      //     as: "function",
-      //   });
+      this.belongsTo(models.module_master, {
+        foreignKey: "module_id",
+        as: "module",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
+      this.belongsTo(models.sub_module_master, {
+        foreignKey: "sub_module_id",
+        as: "subModule",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
+      this.belongsTo(models.function_master, {
+        foreignKey: "function_master_id",
+        as: "function",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
+      this.belongsTo(models.action_master, {
+        foreignKey: "action_id",
+        as: "actions",
+        onDelete: "CASCADE",
+        onUpdate: "CASCADE",
+      });
     }
   }
 
-  user_role.init(
+  user_group.init(
     {
-      //   role_id: {
-      //     type: DataTypes.BIGINT,
-      //     autoIncrement: true,
-      //     primaryKey: true,
-      //     allowNull: false,
-      //   },
-      // user_id: {
-      //   type: DataTypes.BIGINT,
-      //   allowNull: false,
-      // },
       user_group_id: {
         type: DataTypes.BIGINT,
         autoIncrement: true,
@@ -41,33 +45,36 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
         defaultValue: DataTypes.UUIDV4,
       },
-      module_id: {
-        type: DataTypes.STRING(191),
+      role_id: {
+        type: DataTypes.BIGINT,
         allowNull: false,
       },
-      submodule_id: {
-        type: DataTypes.STRING(191),
+      module_id: {
+        type: DataTypes.BIGINT,
+        allowNull: false,
+      },
+      sub_module_id: {
+        type: DataTypes.BIGINT,
         allowNull: false,
       },
       function_master_id: {
-        type: DataTypes.STRING(191),
+        type: DataTypes.BIGINT,
         allowNull: true,
       },
       action_id: {
-        type: DataTypes.TINYINT(1),
-        allowNull: false,
-        defaultValue: 0,
+        type: DataTypes.BIGINT,
+        allowNull: true, // Allows null if there's no specific action
       },
       created_by: {
         type: DataTypes.BIGINT,
         allowNull: false,
-        defaultValue: 1,
+        defaultValue: 0,
       },
       updated_by: {
         type: DataTypes.BIGINT,
         allowNull: false,
-        defaultValue: 1,
-        },
+        defaultValue: 0,
+      },
       created_at: {
         type: DataTypes.DATE,
         allowNull: false,
@@ -81,15 +88,15 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
-      modelName: "user_role",
-      tableName: "user_roles",
+      modelName: "user_group",
+      tableName: "user_groups",
       timestamps: true,
-      paranoid: true, // Soft delete enabled
+      paranoid: true,
       createdAt: "created_at",
       updatedAt: "updated_at",
       deletedAt: "deleted_at",
     }
   );
 
-  return user_role;
+  return user_group;
 };

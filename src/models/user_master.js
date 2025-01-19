@@ -28,45 +28,45 @@ module.exports = (sequelize, DataTypes) => {
   }
   user_master.init(
     {
-      // email: {
-      //     type: DataTypes.STRING(256)
-      // },
-      // password: {
-      //     type: DataTypes.STRING(256)
-      // },
-      // usertype: {
-      //     type: DataTypes.BIGINT
-      // },
-      // parent_id: {
-      //     type: DataTypes.STRING(256)
-      // },
-      // firstname: {
-      //     type: DataTypes.STRING(256)
-      // },
-      // lastname: {
-      //     type: DataTypes.STRING(256)
-      // },
-      // api_token: {
-      //     type: DataTypes.STRING(256)
-      // },
-      // mobile: {
-      //     type: DataTypes.STRING(256)
-      // },
-      // country_id: {
-      //     type: DataTypes.BIGINT
-      // },
-      // is_approved_by_admin: {
-      //     type: DataTypes.TINYINT(1)
-      // },
-      // status: {
-      //     type: DataTypes.TINYINT(1)
-      // },
-      // login_type: {
-      //     type: DataTypes.STRING(256)
-      // },
-      // role_id: {
-      //     type: DataTypes.INTEGER(11)
-      // },
+      email: {
+        type: DataTypes.STRING(256),
+      },
+      password: {
+        type: DataTypes.STRING(256),
+      },
+      usertype: {
+        type: DataTypes.BIGINT,
+      },
+      parent_id: {
+        type: DataTypes.STRING(256),
+      },
+      firstname: {
+        type: DataTypes.STRING(256),
+      },
+      lastname: {
+        type: DataTypes.STRING(256),
+      },
+      api_token: {
+        type: DataTypes.STRING(256),
+      },
+      mobile: {
+        type: DataTypes.STRING(256),
+      },
+      country_id: {
+        type: DataTypes.BIGINT,
+      },
+      is_approved_by_admin: {
+        type: DataTypes.TINYINT(1),
+      },
+      status: {
+        type: DataTypes.TINYINT(1),
+      },
+      login_type: {
+        type: DataTypes.STRING(256),
+      },
+      role_id: {
+        type: DataTypes.INTEGER(11),
+      },
 
       uuid: DataTypes.CHAR(36),
       usertype: DataTypes.BIGINT,

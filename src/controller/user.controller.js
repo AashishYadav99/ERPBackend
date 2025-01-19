@@ -9,6 +9,7 @@ const QRCode = require("qrcode");
 var ejs = require("ejs");
 const db = require("../models");
 const { UserCheckStatus, translate_message } = require("../utils/handler");
+const user_master = require("../models/user_master");
 const userModel = db.user_master;
 const UserTempOtp = db.user_temp_otp;
 const passwordResetsModel = db.password_resets;
@@ -25,161 +26,331 @@ const serviceproductattributeModel = db.service_product_attribute;
 
 const otp_msg = "Your One Time Password for securely accessing CPH4 app is ";
 
-// const register = async (req, res, next) => {
-//     const { role, register_type, email, password, phonecode, phone, language_id, fcmToken, device_type, first_name, last_name, birth_date, currency_id, gender, country_type } = req.body
+const register = async (req, res, next) => {
+  const {
+    role,
+    register_type,
+    email,
+    password,
+    phonecode,
+    mobile,
+    language_id,
+    fcmToken,
+    device_type,
+    firstname,
+    lastname,
+    birth_date,
+    currency_id,
+    gender,
+    country_type,
+  } = req.body;
 
-//     try {
-//         if (email === null || email == null || email == '') {
-//             let message = await translate_message(1, language_id);
-//             res.status(400).json(ResponseFormatter.setResponse(false, 400, message.lablevalue, 'Error', ''));
-//             return
-//         }
-//         /** Check email address exits **/
-//         const { count: emailCount } = await userModel.findAndCountAll({
-//             where: { email: email }
-//         })
+  try {
+    if (email === null || email == null || email == "") {
+      let message = await translate_message(1, language_id);
+      res
+        .status(400)
+        .json(
+          ResponseFormatter.setResponse(
+            false,
+            400,
+            message.lablevalue,
+            "Error",
+            ""
+          )
+        );
+      return;
+    }
+    /** Check email address exits **/
+    const { count: emailCount } = await userModel.findAndCountAll({
+      where: { email: email },
+    });
 
-//         if (emailCount > 0) {
-//             let message = await translate_message(2, language_id);
-//             res.status(400).json(ResponseFormatter.setResponse(false, 400, message.lablevalue, 'Error', ''));
-//             return
-//         }
+    if (emailCount > 0) {
+      let message = await translate_message(2, language_id);
+      res
+        .status(400)
+        .json(
+          ResponseFormatter.setResponse(
+            false,
+            400,
+            message.lablevalue,
+            "Error",
+            ""
+          )
+        );
+      return;
+    }
 
-//         if (role === null || role == null || role == '') {
-//             let message = await translate_message(3, language_id);
-//             res.status(400).json(ResponseFormatter.setResponse(false, 400, message.lablevalue, 'Error', ''));
-//             return
-//         }
+    if (role === null || role == null || role == "") {
+      let message = await translate_message(3, language_id);
+      res
+        .status(400)
+        .json(
+          ResponseFormatter.setResponse(
+            false,
+            400,
+            message.lablevalue,
+            "Error",
+            ""
+          )
+        );
+      return;
+    }
 
-//         if (register_type == '') {
-//             let message = await translate_message(4, language_id);
-//             res.status(400).json(ResponseFormatter.setResponse(false, 400, message.lablevalue, 'Error', ''));
-//         }
-//         const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
-//         if (emailRegexp.test(email) != true) {
-//             let message = await translate_message(5, language_id);
-//             res.status(400).json(ResponseFormatter.setResponse(false, 400, message.lablevalue, 'Error', ''));
-//             return
-//         }
+    if (register_type == "") {
+      let message = await translate_message(4, language_id);
+      res
+        .status(400)
+        .json(
+          ResponseFormatter.setResponse(
+            false,
+            400,
+            message.lablevalue,
+            "Error",
+            ""
+          )
+        );
+    }
+    const emailRegexp =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
+    if (emailRegexp.test(email) != true) {
+      let message = await translate_message(5, language_id);
+      res
+        .status(400)
+        .json(
+          ResponseFormatter.setResponse(
+            false,
+            400,
+            message.lablevalue,
+            "Error",
+            ""
+          )
+        );
+      return;
+    }
 
-//         if (password == '') {
-//             let message = await translate_message(6, language_id);
-//             res.status(400).json(ResponseFormatter.setResponse(false, 400, message.lablevalue, 'Error', ''));
-//             return
-//         }
+    if (password == "") {
+      let message = await translate_message(6, language_id);
+      res
+        .status(400)
+        .json(
+          ResponseFormatter.setResponse(
+            false,
+            400,
+            message.lablevalue,
+            "Error",
+            ""
+          )
+        );
+      return;
+    }
 
-//         if (phonecode == '') {
-//             let message = await translate_message(7, language_id);
-//             res.status(400).json(ResponseFormatter.setResponse(false, 400, message.lablevalue, 'Error', ''));
-//             return
-//         }
+    if (phonecode == "") {
+      let message = await translate_message(7, language_id);
+      res
+        .status(400)
+        .json(
+          ResponseFormatter.setResponse(
+            false,
+            400,
+            message.lablevalue,
+            "Error",
+            ""
+          )
+        );
+      return;
+    }
 
-//         if (phone == '') {
-//             let message = await translate_message(8, language_id);
-//             res.status(400).json(ResponseFormatter.setResponse(false, 400, message.lablevalue, 'Error', ''));
-//             return
-//         }
+    if (mobile == "") {
+      let message = await translate_message(8, language_id);
+      res
+        .status(400)
+        .json(
+          ResponseFormatter.setResponse(
+            false,
+            400,
+            message.lablevalue,
+            "Error",
+            ""
+          )
+        );
+      return;
+    }
 
-//         if (language_id == '') {
-//             let message = await translate_message(9, language_id);
-//             res.status(400).json(ResponseFormatter.setResponse(false, 400, message.lablevalue, 'Error', ''));
-//             return
-//         }
+    if (language_id == "") {
+      let message = await translate_message(9, language_id);
+      res
+        .status(400)
+        .json(
+          ResponseFormatter.setResponse(
+            false,
+            400,
+            message.lablevalue,
+            "Error",
+            ""
+          )
+        );
+      return;
+    }
 
-//         if (fcmToken == '') {
-//             let message = await translate_message(10, language_id);
-//             res.status(400).json(ResponseFormatter.setResponse(false, 400, message.lablevalue, 'Error', ''));
-//             return
-//         }
+    if (fcmToken == "") {
+      let message = await translate_message(10, language_id);
+      res
+        .status(400)
+        .json(
+          ResponseFormatter.setResponse(
+            false,
+            400,
+            message.lablevalue,
+            "Error",
+            ""
+          )
+        );
+      return;
+    }
 
-//         if (device_type == '') {
-//             let message = await translate_message(11, language_id);
-//             res.status(400).json(ResponseFormatter.setResponse(false, 400, message.lablevalue, 'Error', ''));
-//             return
-//         }
+    if (device_type == "") {
+      let message = await translate_message(11, language_id);
+      res
+        .status(400)
+        .json(
+          ResponseFormatter.setResponse(
+            false,
+            400,
+            message.lablevalue,
+            "Error",
+            ""
+          )
+        );
+      return;
+    }
 
-//         if (country_type == '') {
-//             let message = await translate_message(12, language_id);
-//             res.status(400).json(ResponseFormatter.setResponse(false, 400, message.lablevalue, 'Error', ''));
-//             return
-//         }
+    if (country_type == "") {
+      let message = await translate_message(12, language_id);
+      res
+        .status(400)
+        .json(
+          ResponseFormatter.setResponse(
+            false,
+            400,
+            message.lablevalue,
+            "Error",
+            ""
+          )
+        );
+      return;
+    }
 
-//         if (req.file != null) {
-//             let user = await userModel.create({
-//                 festival_role: role,
-//                 register_type: register_type,
-//                 email: email,
-//                 password: password,
-//                 phonecode: phonecode,
-//                 phone: phone,
-//                 language_id: language_id,
-//                 tokencode: fcmToken,
-//                 tokendevice: device_type,
-//                 first_name: first_name,
-//                 people_name: last_name,
-//                 birth_date: birth_date,
-//                 currency_id: currency_id,
-//                 gender: gender,
-//                 photo: req.file.path,
-//                 country_type: country_type
-//                 // first_name: fullname,
-//                 // people_name: fullname,
-//             })
+    if (req.file != null) {
+      let user = await userModel.create({
+        festival_role: role,
+        register_type: register_type,
+        email: email,
+        password: password,
+        phonecode: phonecode,
+        mobile: mobile,
+        language_id: language_id,
+        tokencode: fcmToken,
+        tokendevice: device_type,
+        firstname: firstname,
+        peoplename: lastname,
+        birth_date: birth_date,
+        currency_id: currency_id,
+        gender: gender,
+        photo: req.file.path,
+        country_type: country_type,
+        // first_name: fullname,
+        // people_name: fullname,
+      });
 
-//             //console.log(user);
+      //console.log(user);
 
-//             const jWtToken = jwt.sign(
-//                 {
-//                     email: email,
-//                 },
-//                 "secreatnoteforfestivalapp",
-//                 { expiresIn: "1h" }
-//             );
-//             user = { ...user.toJSON(), ...{ token: jWtToken, type: 'user' } }
+      const jWtToken = jwt.sign(
+        {
+          email: email,
+        },
+        "secreatnoteforfestivalapp",
+        { expiresIn: "1h" }
+      );
+      user = { ...user.toJSON(), ...{ token: jWtToken, type: "user" } };
 
-//             res.status(200).json(ResponseFormatter.setResponse(true, 200, '', '', user));
-//             return
-//         } else {
-//             let user = await userModel.create({
-//                 festival_role: role,
-//                 register_type: register_type,
-//                 email: email,
-//                 password: password,
-//                 phonecode: phonecode,
-//                 phone: phone,
-//                 language_id: language_id,
-//                 tokencode: fcmToken,
-//                 tokendevice: device_type,
-//                 first_name: first_name,
-//                 people_name: last_name,
-//                 birth_date: birth_date,
-//                 currency_id: currency_id,
-//                 gender: gender,
-//                 country_type: country_type
-//                 // first_name: fullname,
-//                 // people_name: fullname,
-//             })
+      res
+        .status(200)
+        .json(ResponseFormatter.setResponse(true, 200, "", "", user));
+      return;
+    } else {
+      let user = await userModel.create({
+        festival_role: role,
+        register_type: register_type,
+        email: email,
+        password: password,
+        phonecode: phonecode,
+        mobile: mobile,
+        language_id: language_id,
+        tokencode: fcmToken,
+        tokendevice: device_type,
+        firstname: firstname,
+        lastname: lastname,
+        birth_date: birth_date,
+        currency_id: currency_id,
+        gender: gender,
+        country_type: country_type,
+        // first_name: fullname,
+        // people_name: fullname,
+      });
 
-//             //console.log(user);
+      //console.log(user);
 
-//             const jWtToken = jwt.sign(
-//                 {
-//                     email: email,
-//                 },
-//                 "secreatnoteforfestivalapp",
-//                 { expiresIn: "1h" }
-//             );
-//             user = { ...user.toJSON(), ...{ token: jWtToken, type: 'user' } }
+      const jWtToken = jwt.sign(
+        {
+          email: email,
+        },
+        "secreatnoteforfestivalapp",
+        { expiresIn: "1h" }
+      );
+      user = { ...user.toJSON(), ...{ token: jWtToken, type: "user" } };
 
-//             res.status(200).json(ResponseFormatter.setResponse(true, 200, '', '', user));
-//             return
-//         }
+      res
+        .status(200)
+        .json(ResponseFormatter.setResponse(true, 200, "", "", user));
+      return;
+    }
+  } catch (error) {
+    let message = await translate_message(13, language_id);
+    res
+      .status(400)
+      .json(
+        ResponseFormatter.setResponse(
+          false,
+          400,
+          message.lablevalue,
+          "Error",
+          error.message
+        )
+      );
+  }
+};
 
-//     } catch (error) {
-//         let message = await translate_message(13, language_id);
-//         res.status(400).json(ResponseFormatter.setResponse(false, 400, message.lablevalue, 'Error', error.message));
-//     }
-// }
+// Controller for fetching all records
+const getAll = async (req, res) => {
+  try {
+    const modules = await userModel.findAll({
+      where: { deleted_at: null },
+    });
+
+    res.status(200).json({
+      message: "users data fetched successfully!",
+      data: modules,
+    });
+  } catch (error) {
+    console.error("Error fetching modules: ", error);
+    res.status(500).json({
+      message: "An error occurred while fetching the modules.",
+      error: error.message,
+    });
+  }
+};
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -913,9 +1084,12 @@ const refreshToken = async (req, res, next) => {
 };
 
 module.exports = {
+  register,
   login,
   forgotPassword,
   resetPassword,
   changePassword,
   refreshToken,
+  getAll,
+  getuserById,
 };

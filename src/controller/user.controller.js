@@ -28,21 +28,23 @@ const otp_msg = "Your One Time Password for securely accessing CPH4 app is ";
 
 const register = async (req, res, next) => {
   const {
-    role,
+    role_id,
     register_type,
     email,
     password,
     phonecode,
     mobile,
     language_id,
-    fcmToken,
-    device_type,
+    // fcmToken,
+    // device_type,
     firstname,
     lastname,
     birth_date,
-    currency_id,
+    country_id,
     gender,
-    country_type,
+    orgnisation,
+    location,
+    // country_type,
   } = req.body;
 
   try {
@@ -82,36 +84,37 @@ const register = async (req, res, next) => {
       return;
     }
 
-    if (role === null || role == null || role == "") {
-      let message = await translate_message(3, language_id);
-      res
-        .status(400)
-        .json(
-          ResponseFormatter.setResponse(
-            false,
-            400,
-            message.lablevalue,
-            "Error",
-            ""
-          )
-        );
-      return;
-    }
+    // if (role === null || role == null || role == "") {
+    //   let message = await translate_message(3, language_id);
+    //   res
+    //     .status(400)
+    //     .json(
+    //       ResponseFormatter.setResponse(
+    //         false,
+    //         400,
+    //         message.lablevalue,
+    //         "Error",
+    //         ""
+    //       )
+    //     );
+    //   return;
+    // }
 
-    if (register_type == "") {
-      let message = await translate_message(4, language_id);
-      res
-        .status(400)
-        .json(
-          ResponseFormatter.setResponse(
-            false,
-            400,
-            message.lablevalue,
-            "Error",
-            ""
-          )
-        );
-    }
+    // if (register_type == "") {
+    //   let message = await translate_message(4, language_id);
+    //   res
+    //     .status(400)
+    //     .json(
+    //       ResponseFormatter.setResponse(
+    //         false,
+    //         400,
+    //         message.lablevalue,
+    //         "Error",
+    //         ""
+    //       )
+    //     );
+    // }
+
     const emailRegexp =
       /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
     if (emailRegexp.test(email) != true) {
@@ -146,120 +149,123 @@ const register = async (req, res, next) => {
       return;
     }
 
-    if (phonecode == "") {
-      let message = await translate_message(7, language_id);
-      res
-        .status(400)
-        .json(
-          ResponseFormatter.setResponse(
-            false,
-            400,
-            message.lablevalue,
-            "Error",
-            ""
-          )
-        );
-      return;
-    }
+    // if (phonecode == "") {
+    //   let message = await translate_message(7, language_id);
+    //   res
+    //     .status(400)
+    //     .json(
+    //       ResponseFormatter.setResponse(
+    //         false,
+    //         400,
+    //         message.lablevalue,
+    //         "Error",
+    //         ""
+    //       )
+    //     );
+    //   return;
+    // }
 
-    if (mobile == "") {
-      let message = await translate_message(8, language_id);
-      res
-        .status(400)
-        .json(
-          ResponseFormatter.setResponse(
-            false,
-            400,
-            message.lablevalue,
-            "Error",
-            ""
-          )
-        );
-      return;
-    }
+    // if (mobile == "") {
+    //   let message = await translate_message(8, language_id);
+    //   res
+    //     .status(400)
+    //     .json(
+    //       ResponseFormatter.setResponse(
+    //         false,
+    //         400,
+    //         message.lablevalue,
+    //         "Error",
+    //         ""
+    //       )
+    //     );
+    //   return;
+    // }
 
-    if (language_id == "") {
-      let message = await translate_message(9, language_id);
-      res
-        .status(400)
-        .json(
-          ResponseFormatter.setResponse(
-            false,
-            400,
-            message.lablevalue,
-            "Error",
-            ""
-          )
-        );
-      return;
-    }
+    // if (language_id == "") {
+    //   let message = await translate_message(9, language_id);
+    //   res
+    //     .status(400)
+    //     .json(
+    //       ResponseFormatter.setResponse(
+    //         false,
+    //         400,
+    //         message.lablevalue,
+    //         "Error",
+    //         ""
+    //       )
+    //     );
+    //   return;
+    // }
 
-    if (fcmToken == "") {
-      let message = await translate_message(10, language_id);
-      res
-        .status(400)
-        .json(
-          ResponseFormatter.setResponse(
-            false,
-            400,
-            message.lablevalue,
-            "Error",
-            ""
-          )
-        );
-      return;
-    }
+    // if (fcmToken == "") {
+    //   let message = await translate_message(10, language_id);
+    //   res
+    //     .status(400)
+    //     .json(
+    //       ResponseFormatter.setResponse(
+    //         false,
+    //         400,
+    //         message.lablevalue,
+    //         "Error",
+    //         ""
+    //       )
+    //     );
+    //   return;
+    // }
 
-    if (device_type == "") {
-      let message = await translate_message(11, language_id);
-      res
-        .status(400)
-        .json(
-          ResponseFormatter.setResponse(
-            false,
-            400,
-            message.lablevalue,
-            "Error",
-            ""
-          )
-        );
-      return;
-    }
+    // if (device_type == "") {
+    //   let message = await translate_message(11, language_id);
+    //   res
+    //     .status(400)
+    //     .json(
+    //       ResponseFormatter.setResponse(
+    //         false,
+    //         400,
+    //         message.lablevalue,
+    //         "Error",
+    //         ""
+    //       )
+    //     );
+    //   return;
+    // }
 
-    if (country_type == "") {
-      let message = await translate_message(12, language_id);
-      res
-        .status(400)
-        .json(
-          ResponseFormatter.setResponse(
-            false,
-            400,
-            message.lablevalue,
-            "Error",
-            ""
-          )
-        );
-      return;
-    }
+    // if (country_type == "") {
+    //   let message = await translate_message(12, language_id);
+    //   res
+    //     .status(400)
+    //     .json(
+    //       ResponseFormatter.setResponse(
+    //         false,
+    //         400,
+    //         message.lablevalue,
+    //         "Error",
+    //         ""
+    //       )
+    //     );
+    //   return;
+    // }
 
     if (req.file != null) {
       let user = await userModel.create({
-        festival_role: role,
-        register_type: register_type,
+        festival_role: role_id,
+        // register_type: register_type,
         email: email,
         password: password,
         phonecode: phonecode,
         mobile: mobile,
         language_id: language_id,
-        tokencode: fcmToken,
-        tokendevice: device_type,
+        // tokencode: fcmToken,
+        // tokendevice: device_type,
         firstname: firstname,
         peoplename: lastname,
         birth_date: birth_date,
-        currency_id: currency_id,
+        country_id: country_id,
+        role_id: role_id,
         gender: gender,
+        orgnisation: orgnisation,
+        location: location,
         photo: req.file.path,
-        country_type: country_type,
+        // country_type: country_type,
         // first_name: fullname,
         // people_name: fullname,
       });
@@ -281,21 +287,25 @@ const register = async (req, res, next) => {
       return;
     } else {
       let user = await userModel.create({
-        festival_role: role,
-        register_type: register_type,
+        festival_role: role_id,
+        // register_type: register_type,
         email: email,
         password: password,
         phonecode: phonecode,
         mobile: mobile,
         language_id: language_id,
-        tokencode: fcmToken,
-        tokendevice: device_type,
+        // tokencode: fcmToken,
+        // tokendevice: device_type,
         firstname: firstname,
         lastname: lastname,
         birth_date: birth_date,
-        currency_id: currency_id,
+        country_id: country_id,
+        role_id: role_id,
+
         gender: gender,
-        country_type: country_type,
+        orgnisation: orgnisation,
+        location: location,
+        // country_type: country_type,
         // first_name: fullname,
         // people_name: fullname,
       });

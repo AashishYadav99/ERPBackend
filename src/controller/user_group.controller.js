@@ -1,25 +1,25 @@
 const { user_group, module_master, sub_module_master, function_master, action_master } = require("../models");
 
-// Controller for fetching permissions by role IDs (query parameter)
-exports.getPermissionsByRoleId = async (req, res) => {
-  // Log to see if the role_ids are coming correctly
-  console.log("role_ids: ", req.query.role_ids);
+  // Controller for fetching permissions by role IDs (path parameter)
+  exports.getPermissionsByRoleId = async (req, res) => {
+  // Log to see if the role_id is coming correctly
+  console.log("role_id: ", req.params.role_id);
 
-  let roleIds = req.query.role_ids;
-  if (typeof roleIds === "string") {
-    roleIds = [roleIds]; // If it's a single role_id, convert it to an array
-  }
+  const roleIds = req.params.role_id; // Getting role_id from the URL path
 
   if (!roleIds || roleIds.length === 0) {
     return res.status(400).json({
-      message: "Role IDs are required.",
+      message: "Role ID is required.",
     });
   }
 
   try {
+    // Ensure roleIds is an array (in case a single role_id is passed as a string)
+    const roleArray = Array.isArray(roleIds) ? roleIds : [roleIds];
+
     const userRoles = await user_group.findAll({
       where: {
-        role_id: roleIds, 
+        role_id: roleArray, // Use roleArray to match one or more role_ids
         deleted_at: null,
       },
       include: [
@@ -27,7 +27,7 @@ exports.getPermissionsByRoleId = async (req, res) => {
         { model: sub_module_master, as: "subModule" },
         { model: function_master, as: "function" },
         { model: action_master, as: "actions" },
-      ],
+      ], logging: console.log, // This will log the generated SQL query to the console
     });
 
     if (userRoles.length === 0) {
@@ -41,12 +41,12 @@ exports.getPermissionsByRoleId = async (req, res) => {
       sub_module_id: userRole.sub_module_id,
       function_master_id: userRole.function_master_id,
       action_id: userRole.action_id,
-      module_name: userRole.module.module_name,
-      sub_module_name: userRole.subModule.sub_module_name,
-      function_name: userRole.function.function_master_name,
-      action_name: userRole.actions.action_name,
+      module_name: userRole.module?.module_name || 'No Module', // Safe access with default value
+      sub_module_name: userRole.subModule?.sub_module_name || 'No Sub Module', // Safe access with default value
+      function_name: userRole.function?.function_master_name || 'No Function', // Safe access with default value
+      action_name: userRole.actions?.action_name || 'No Action', // Safe access with default value
     }));
-
+    
     res.status(200).json({
       message: "Permissions fetched successfully!",
       data: permissions,

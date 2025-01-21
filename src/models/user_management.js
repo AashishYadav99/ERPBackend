@@ -1,4 +1,4 @@
-"use strict";
+"user strict";
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
@@ -7,6 +7,12 @@ module.exports = (sequelize, DataTypes) => {
   }
   user_management.init(
     {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true,  // Ensure auto-increment is enabled for this primary key
+        allowNull: false,
+      },
       uuid: {
         type: DataTypes.CHAR(36),
         allowNull: false,
@@ -48,12 +54,14 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(191),
         allowNull: true, // Optional field
       },
-      role: {
-        type: DataTypes.STRING(50),
+      role_id: {
+        type: DataTypes.INTEGER,  // Ensured that role_id is an integer
         allowNull: false,
-        // validate: {
-        //   notEmpty: true,
-        // },
+      },
+      is_primary: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false, // Only one role_id can be primary
       },
     },
     {

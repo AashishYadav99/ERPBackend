@@ -8,8 +8,7 @@ router.get("/:id", userGroupController.getById); // /user-groups/:id
 router.post("/bulk", userGroupController.bulkCreate); // /user-groups/bulk
 
 // Route for fetching permissions by role ID
-
-router.get("permissions/:id", userGroupController.getPermissionsByRoleId); // /user-groups/:id
+router.get('/permissions/:role_id', userGroupController.getPermissionsByRoleId);
 
 
 router.put("/:id", userGroupController.update); // /user-groups/:id

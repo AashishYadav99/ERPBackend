@@ -47,6 +47,7 @@ const user_roleRoute = require("./user_role.route");
 const actionMasterRoute = require("./action_master.route");
 const functionMaterMapRoute = require("./function_action_master_map.route");
 const userGroupRoute = require("./user_group.route");
+const role_masterRoute = require("./role_master.route");
 
 /** ------------ **
 Defining Routes
@@ -62,6 +63,7 @@ router.use("/function_master", function_masterRoute);
 router.use("/action_master", actionMasterRoute);
 router.use("/user_management", user_managementRoute);
 router.use("/user_role", user_roleRoute);
+router.use("/role_master", role_masterRoute);
 router.use("/user_group", userGroupRoute);
 router.use("/item", itemMasterRoute);
 router.use("/batch", batchRoute);

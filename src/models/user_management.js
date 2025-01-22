@@ -1,16 +1,23 @@
-"user strict";
+"use strict";
 const { Model } = require("sequelize");
 
 module.exports = (sequelize, DataTypes) => {
   class user_management extends Model {
-    static associate(models) {}
+    static associate(models) {
+      // This association will reference the role_master's role_id
+      user_management.belongsTo(models.role_master, {
+        foreignKey: 'role_id', // role_id in user_management table
+        as: 'role', // Alias for the association
+      });
+    }
   }
+
   user_management.init(
     {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true,  // Ensure auto-increment is enabled for this primary key
+        autoIncrement: true,
         allowNull: false,
       },
       uuid: {
@@ -32,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
         validate: {
-          isEmail: true, // Ensures the value is a valid email
+          isEmail: true,
         },
       },
       country_code: {
@@ -43,25 +50,29 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(15),
         allowNull: false,
         validate: {
-          isNumeric: true, // Ensures the value contains only numbers
+          isNumeric: true,
         },
       },
       location: {
         type: DataTypes.STRING(191),
-        allowNull: true, // Optional field
+        allowNull: true,
       },
       organisation: {
         type: DataTypes.STRING(191),
-        allowNull: true, // Optional field
+        allowNull: true,
       },
       role_id: {
-        type: DataTypes.INTEGER,  // Ensured that role_id is an integer
+        type: DataTypes.BIGINT,
         allowNull: false,
+        references: {
+          model: "role_masters", // Reference to role_master table
+          key: "role_id", // Reference to role_master's role_id column
+        },
       },
       is_primary: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: false, // Only one role_id can be primary
+        defaultValue: false,
       },
     },
     {
@@ -69,18 +80,10 @@ module.exports = (sequelize, DataTypes) => {
       modelName: "user_management",
       tableName: "user_managements",
       timestamps: true,
-      paranoid: true, // Soft delete enabled
+      paranoid: true,
       createdAt: "created_at",
       updatedAt: "updated_at",
       deletedAt: "deleted_at",
-      hooks: {
-        beforeCreate: (module, options) => {
-          // You can add any preprocessing before creating a module
-        },
-        beforeUpdate: (module, options) => {
-          // You can add any preprocessing before updating a module
-        },
-      },
     }
   );
 
